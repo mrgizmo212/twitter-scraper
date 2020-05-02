@@ -32,6 +32,19 @@ csvwriter = csv.writer(csvfile, delimiter='|')
 query = '' #keyword goes here
 max_tweets = 10000 #set a max number of tweets to collect
 
+#shows full text of truncated tweets
+def on_status(self, status):
+    if hasattr(status, "retweeted_status"):  # Check if Retweet
+        try:
+            print(status.retweeted_status.extended_tweet["full_text"])
+        except AttributeError:
+            print(status.retweeted_status.text)
+    else:
+        try:
+            print(status.extended_tweet["full_text"])
+        except AttributeError:
+            print(status.text)
+
 # since_id and max_id allow you to set a timeframe for tweet scraping if not collecting tweets live
 # wait_on_rate_limit automatically waits for rate limits to replenish
 # tweet_mode='extended' avoids tweets showing as truncated
